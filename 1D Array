@@ -1,0 +1,110 @@
+Longest consecutive subsequence
+Given an array of positive integers. Find the length of the longest sub-sequence such that elements in the subsequence are consecutive integers, the consecutive numbers can be in any order.
+
+
+
+Constraints:
+
+1 <= N <= 105
+
+0 <= a[i] <= 105 
+
+
+
+Example 1:
+
+Input:
+
+N = 7
+
+a[] = {2,6,1,9,4,5,3}
+
+Output:
+
+6
+
+Explanation:
+
+The consecutive numbers here are 1, 2, 3, 4, 5, 6. These 6 numbers form the longest consecutive subsquence.
+
+
+
+Example 2:
+
+Input:
+
+N = 7
+
+a[] = {1,9,3,10,4,20,2}
+
+Output:
+
+4
+
+Explanation:
+
+1, 2, 3, 4 is the longest consecutive subsequence.
+
+================================================================================================
+
+
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+
+public class LongestConsecutiveSubsequence {
+
+    public static int findLongestConseqSubseq(int[] arr, int N) {
+        Set<Integer> set = new HashSet<>();
+        
+        // Add all elements to the set
+        for (int i = 0; i < N; i++) {
+            set.add(arr[i]);
+        }
+        
+        int maxLength = 0;
+        
+        // Iterate through the array
+        for (int i = 0; i < N; i++) {
+            // Check if the current element is the start of a sequence
+            if (!set.contains(arr[i] - 1)) {
+                int currentNum = arr[i];
+                int currentStreak = 1;
+
+                // Count the length of the sequence
+                while (set.contains(currentNum + 1)) {
+                    currentNum += 1;
+                    currentStreak += 1;
+                }
+
+                // Update the maximum length found
+                maxLength = Math.max(maxLength, currentStreak);
+            }
+        }
+        
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // Input number of test cases
+        int T = sc.nextInt();
+        
+        while (T-- > 0) {
+            // Input size of the array
+            int N = sc.nextInt();
+            int[] arr = new int[N];
+            
+            // Input array elements
+            for (int i = 0; i < N; i++) {
+                arr[i] = sc.nextInt();
+            }
+            
+            // Find and print the length of the longest consecutive subsequence
+            System.out.println(findLongestConseqSubseq(arr, N));
+        }
+        
+        sc.close();
+    }
+}
