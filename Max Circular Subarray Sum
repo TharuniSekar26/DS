@@ -1,0 +1,138 @@
+Max Circular Subarray Sum
+Given an array arr[] of N integers arranged in a circular fashion. Your task is to find the maximum contiguous subarray sum.
+
+
+
+Note: T denotes the number of testcases.
+
+Constraints:
+
+1 <= N <= 106
+
+-106 <= Arr[i] <= 106
+
+
+
+Example 1:
+
+Input:
+
+T=1
+
+N = 7
+
+arr[] = {8,-8,9,-9,10,-11,12}
+
+Output:
+
+22
+
+Explanation:
+
+Starting from the last element of the array, i.e, 12, and moving in a circular fashion, we 
+
+have max subarray as 12, 8, -8, 9, -9, 10, which gives maximum sum as 22.
+
+
+
+Example 2:
+
+Input:
+
+T=1
+
+N = 8
+
+arr[] = {10,-3,-4,7,6,5,-4,-1}
+
+Output:
+
+23
+
+=================================================================================
+
+import java.util.Scanner;
+
+public class MaxCircularSubarraySum {
+
+    // Function to calculate the maximum subarray sum using Kadane's Algorithm
+    public static int kadane(int[] arr, int n) {
+        int maxEndHere = arr[0];
+        int maxSoFar = arr[0];
+        
+        for (int i = 1; i < n; i++) {
+            maxEndHere = Math.max(arr[i], maxEndHere + arr[i]);
+            maxSoFar = Math.max(maxSoFar, maxEndHere);
+        }
+        
+        return maxSoFar;
+    }
+
+    // Function to find the maximum circular subarray sum
+    public static int maxCircularSubarraySum(int[] arr, int n) {
+        // Step 1: Find the maximum subarray sum using Kadane's algorithm
+        int maxKadane = kadane(arr, n);
+
+        // Step 2: Find the total sum of the array
+        int totalSum = 0;
+        for (int i = 0; i < n; i++) {
+            totalSum += arr[i];
+        }
+
+        // Step 3: Find the minimum subarray sum using Kadane's algorithm on inverted array
+        int minKadane = kadaneInvert(arr, n);
+        
+        // Step 4: Calculate the maximum circular subarray sum
+        int maxCircular = totalSum - minKadane;
+
+        // Step 5: Handle the case where all elements are negative
+        if (maxCircular == 0) {
+            return maxKadane;  // In case all elements are negative, maxKadane will be the result
+        }
+
+        // Return the maximum of non-circular and circular subarray sums
+        return Math.max(maxKadane, maxCircular);
+    }
+
+    // Function to calculate the minimum subarray sum using inverted Kadane's Algorithm
+    public static int kadaneInvert(int[] arr, int n) {
+        int minEndHere = -arr[0];
+        int minSoFar = -arr[0];
+        
+        for (int i = 1; i < n; i++) {
+            minEndHere = Math.max(-arr[i], minEndHere + (-arr[i]));
+            minSoFar = Math.max(minSoFar, minEndHere);
+        }
+        
+        return -minSoFar;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // Input number of test cases
+        int T = sc.nextInt();
+        
+        while (T-- > 0) {
+            // Input size of the array
+            int N = sc.nextInt();
+            int[] arr = new int[N];
+            
+            // Input array elements
+            for (int i = 0; i < N; i++) {
+                arr[i] = sc.nextInt();
+            }
+            
+            // Find and print the maximum circular subarray sum
+            System.out.println(maxCircularSubarraySum(arr, N));
+        }
+        
+        sc.close();
+    }
+}
+
+
+Explanation:
+
+Sum of the circular subarray with maximum sum is 23.
+
