@@ -1,0 +1,104 @@
+Alternate positive and negative numbers
+Given an unsorted array Arr of N positive and negative numbers. Your task is to create an array of alternate positive and negative numbers without changing the relative order of positive and negative numbers.
+
+Note: Array should start with a positive number. T denotes the number of test cases.
+
+
+
+Constraints:
+
+1 ≤ N ≤ 107
+
+-106 ≤ Arr[i] ≤ 107
+
+
+
+Example 1:
+
+Input: 
+
+T=1
+
+N = 9
+
+Arr[] = {9, 4, -2, -1, 5, 0, -5, -3, 2}
+
+Output:
+
+9 -2 4 -1 5 -5 0 -3 2
+
+
+
+Example 2:
+
+Input: 
+
+N = 10
+
+Arr[] = {-5, -2, 5, 2, 4, 7, 1, 8, 0, -8}
+
+Output:
+
+5 -5 2 -2 4 -8 7 1 8 0 
+
+===========================================================
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class AlternatePositiveNegative {
+    
+    public static void rearrange(int[] arr, int n) {
+        List<Integer> positive = new ArrayList<>();
+        List<Integer> negative = new ArrayList<>();
+        
+        // Separate positive and negative numbers
+        for (int i = 0; i < n; i++) {
+            if (arr[i] >= 0) {
+                positive.add(arr[i]);
+            } else {
+                negative.add(arr[i]);
+            }
+        }
+        
+        // Merge positive and negative lists into the original array
+        int i = 0, posIndex = 0, negIndex = 0;
+        while (posIndex < positive.size() && negIndex < negative.size()) {
+            arr[i++] = positive.get(posIndex++);
+            arr[i++] = negative.get(negIndex++);
+        }
+        
+        // If there are remaining positive elements
+        while (posIndex < positive.size()) {
+            arr[i++] = positive.get(posIndex++);
+        }
+        
+        // If there are remaining negative elements
+        while (negIndex < negative.size()) {
+            arr[i++] = negative.get(negIndex++);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int T = sc.nextInt();  // Number of test cases
+        while (T-- > 0) {
+            int N = sc.nextInt();  // Size of the array
+            int[] Arr = new int[N];
+            for (int i = 0; i < N; i++) {
+                Arr[i] = sc.nextInt();
+            }
+            
+            rearrange(Arr, N);
+            
+            for (int i = 0; i < N; i++) {
+                System.out.print(Arr[i] + " ");
+            }
+            System.out.println();
+        }
+
+        sc.close();
+    }
+}
