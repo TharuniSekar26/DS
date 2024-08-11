@@ -1,0 +1,94 @@
+Stock buy and sell
+The cost of stock on each day is given in an array A[] of size N. Find all the days on which you buy and sell the stock so that in between those days your profit is maximum.
+
+Constraints:
+
+2 <= N <= 106
+
+0 <= Ai <= 106
+
+Example 1:
+
+Input:
+
+N = 7
+
+A[] = {100,180,260,310,40,535,695}
+
+Output:
+
+(0 3) (4 6)
+
+Explanation:
+
+We can buy stock on day 0,and sell it on 3rd day, which will give us maximum profit. Now, we buy stock on day 4 and sell it on day 6.
+
+Example 2:
+
+Input:
+
+N = 5
+
+A[] = {4,2,2,2,4}
+
+Output:
+
+(3 4)
+
+Explanation:
+
+We can buy stock on day 3,and sell it on 4th day, which will give us maximum profit.
+
+=================================================================================
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+class StockBuySell {
+    // A method to find the days of buying and selling stock for maximum profit
+    public static List<int[]> stockBuySell(int[] A, int N) {
+        List<int[]> result = new ArrayList<>();
+        int i = 0;
+
+        while (i < N - 1) {
+            // Find the local minima (buying point)
+            while (i < N - 1 && A[i + 1] <= A[i]) {
+                i++;
+            }
+
+            if (i == N - 1) {
+                break; // No further profits can be made
+            }
+
+            int buy = i++;
+
+            // Find the local maxima (selling point)
+            while (i < N && A[i] >= A[i - 1]) {
+                i++;
+            }
+
+            int sell = i - 1;
+
+            result.add(new int[]{buy, sell});
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] A1 = {100, 180, 260, 310, 40, 535, 695};
+        int N1 = A1.length;
+        List<int[]> result1 = stockBuySell(A1, N1);
+        for (int[] r : result1) {
+            System.out.println("(" + r[0] + " " + r[1] + ")");
+        }
+
+        int[] A2 = {4, 2, 2, 2, 4};
+        int N2 = A2.length;
+        List<int[]> result2 = stockBuySell(A2, N2);
+        for (int[] r : result2) {
+            System.out.println("(" + r[0] + " " + r[1] + ")");
+        }
+    }
+}
