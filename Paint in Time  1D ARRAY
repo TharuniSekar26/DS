@@ -1,0 +1,137 @@
+Paint in Time
+Dilpreet wants to paint his dog's home that has n boards with different lengths. The length of ith board is given by arr[i] where arr[] is an array of n integers. He hired k painters for this work and each painter takes 1 unit time to paint 1 unit of the board. The problem is to find the minimum time to get this job done if all painters start together with the constraint that any painter will only paint continuous boards, say boards numbered {2,3,4} or only board {1} or nothing but not boards {2,4,5}.
+
+
+
+Constraints:
+
+1 <= n <= 105
+
+1 <= k <= 105
+
+1 <= arr[i] <= 105
+
+
+
+Example 1:
+
+Input:
+
+n = 5
+
+k = 3
+
+arr[] = {5,10,30,20,15}
+
+Output: 35
+
+Explanation:
+
+The most optimal way will be:
+
+Painter 1 allocation : {5,10}
+
+Painter 2 allocation : {30}
+
+Painter 3 allocation : {20,15}
+
+Job will be done when all painters finish i.e. at time = max(5+10, 30, 20+15) = 35
+
+
+
+Example 2:
+
+Input:
+
+n = 4
+
+k = 2
+
+arr[] = {10,20,30,40}
+
+Output: 60
+
+Explanation:
+
+The most optimal way to paint:
+
+Painter 1 allocation : {10,20,30}
+
+Painter 2 allocation : {40}
+
+Job will be complete at time = 60
+=========================================================================================
+
+import java.util.Scanner;
+
+public class PaintInTime {
+
+    // Function to check if it is possible to allocate boards within a given maxTime
+    public static boolean isPossible(int[] arr, int n, int k, int maxTime) {
+        int painters = 1;
+        int currentTime = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > maxTime) {
+                return false;  // If a single board is larger than maxTime, it's not feasible
+            }
+
+            if (currentTime + arr[i] > maxTime) {
+                painters++;
+                currentTime = arr[i];
+                
+                if (painters > k) {
+                    return false;  // More painters needed than available
+                }
+            } else {
+                currentTime += arr[i];
+            }
+        }
+        return true;
+    }
+
+    // Function to find the minimum time required to paint all boards
+    public static int findMinTime(int[] arr, int n, int k) {
+        int low = arr[0];
+        int high = 0;
+
+        for (int i = 0; i < n; i++) {
+            high += arr[i];
+            low = Math.max(low, arr[i]);
+        }
+
+        int result = high;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            if (isPossible(arr, n, k, mid)) {
+                result = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input number of boards and painters
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+
+        // Input lengths of the boards
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        // Find and print the minimum time required to paint all boards
+        System.out.println(findMinTime(arr, n, k));
+
+        sc.close();
+    }
+}
