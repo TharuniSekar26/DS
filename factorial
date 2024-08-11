@@ -1,0 +1,89 @@
+Large Factorial
+You are given an array A of integers of length N. You need to calculate the factorial of each number. The answer can be very large, so print it modulo 109 + 7.
+
+
+
+Constraints:
+
+1 <= N <= 105
+
+0 <= A[i] <= 105
+
+
+
+Example 1:
+
+Input:
+
+N = 5
+
+A[] = {0, 1, 2, 3, 4}
+
+Output:
+
+1 1 2 6 24
+
+Explanation:
+
+Factorial of 0 is 1, factorial of 1 is 1, factorial of 2 is 2, factorial of 3 is 6 and so on.
+
+
+
+Example 2:
+
+Input:
+
+N = 3
+
+A[] = {5, 6, 3}
+
+Output:
+
+120 720 6
+
+Explanation:
+
+Factorial of 5 is 120, factorial of 6 is 720, factorial of 3 is 6.
+
+==========================================================================================
+
+import java.util.Scanner;
+
+public class LargeFactorial {
+    // Modulo value as per the problem statement
+    static final int MOD = 1000000007;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input the size of the array
+        int N = sc.nextInt();
+        int[] A = new int[N];
+
+        // Input the array elements
+        for (int i = 0; i < N; i++) {
+            A[i] = sc.nextInt();
+        }
+
+        // Find the maximum value in the array
+        int maxElement = 0;
+        for (int i = 0; i < N; i++) {
+            if (A[i] > maxElement) {
+                maxElement = A[i];
+            }
+        }
+
+        // Precompute all factorials up to the maximum element in A modulo MOD
+        long[] factorial = new long[maxElement + 1];
+        factorial[0] = 1;
+        for (int i = 1; i <= maxElement; i++) {
+            factorial[i] = (factorial[i - 1] * i) % MOD;
+        }
+
+        // Output the factorial for each element in A
+        for (int i = 0; i < N; i++) {
+            System.out.print(factorial[A[i]] + " ");
+        }
+        sc.close();
+    }
+}
