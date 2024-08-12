@@ -1,0 +1,99 @@
+Write a program to find the maximum number in a list.
+
+
+
+Example:
+
+Input:
+
+1
+
+7
+
+2
+
+5
+
+-1
+
+Output:
+
+7
+
+=========================================
+
+import java.util.Scanner;
+class Node {
+    int data;
+    Node next;
+
+    // Constructor to create a new node
+    // Next is by default initialized as null
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class Main {
+    Node head; // head of the list
+
+    // Method to insert a new node at the end of the list
+    public void insert(int data) {
+        Node newNode = new Node(data);
+
+        // If the linked list is empty, then make the new node as head
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node last = head;
+            while (last.next != null) {
+                last = last.next;
+            }
+            last.next = newNode;
+        }
+    }
+
+    // Method to find the maximum value in the linked list
+    public int findMax() {
+        if (head == null) {
+            throw new IllegalStateException("List is empty");
+        }
+
+        int max = head.data;
+        Node currentNode = head.next;
+        while (currentNode != null) {
+            if (currentNode.data > max) {
+                max = currentNode.data;
+            }
+            currentNode = currentNode.next;
+        }
+        return max;
+    }
+
+    public static void main(String[] args) {
+        Main list = new Main();
+        Scanner scanner = new Scanner(System.in);
+        int data;
+
+      
+        // Continuously get input from the user
+        while (true) {
+            data = scanner.nextInt();
+            if (data < 0) {
+                break;
+            }
+            list.insert(data);
+        }
+
+        // Find and print the maximum element in the list
+        try {
+            int max = list.findMax();
+            System.out.println( max);
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
+
+        scanner.close();
+    }
+}
