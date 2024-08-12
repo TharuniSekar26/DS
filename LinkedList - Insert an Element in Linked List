@@ -1,0 +1,104 @@
+Insert an element in linked list
+Write a program to insert an element at the end of the linked list. Get the values continuously from the user until the user enters a negative value.
+
+
+
+Format:
+
+Input:
+
+The input should be numbers (until user enters a negative value).
+
+Output:
+
+The output should be the list elements in separate lines.
+
+
+
+Example:
+
+Input:
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+Output:
+
+1
+
+2
+
+3
+
+4
+
+====================================================================================
+
+import java.util.Scanner;
+class Node {
+    int data;
+    Node next;
+
+    // Constructor to create a new node
+    // Next is by default initialized as null
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+
+class Main {
+    Node head; // head of the list
+
+    // Method to insert a new node at the end of the list
+    public void insert(int data) {
+        Node newNode = new Node(data);
+
+        // If the linked list is empty, then make the new node as head
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node last = head;
+            while (last.next != null) {
+                last = last.next;
+            }
+            last.next = newNode;
+        }
+    }
+
+    // Method to print the linked list
+    public void printList() {
+        Node currentNode = head;
+        while (currentNode != null) {
+            System.out.println(currentNode.data);
+            currentNode = currentNode.next;
+        }
+    }
+
+    public static void main(String[] args) {
+       Main m = new Main();
+        Scanner scanner = new Scanner(System.in);
+        int data;
+
+        // Continuously get input from the user
+        while (true) {
+            data = scanner.nextInt();
+            if (data < 0) {
+                break;
+            }
+            m.insert(data);
+        }
+
+        // Print the list elements
+        m.printList();
+        scanner.close();
+    }
+}
